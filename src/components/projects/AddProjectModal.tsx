@@ -59,11 +59,8 @@ export default function AddProjectModal({
     handleSubmit,
     reset,
     control,
-    watch,
     formState: { errors },
   } = useForm<FormData>();
-
-  const budget = watch("budget");
 
   const fetchFiscalYears = async () => {
     try {
@@ -156,7 +153,7 @@ export default function AddProjectModal({
               <Controller
                 name="fiscalYearId"
                 control={control}
-                rules={{ required: "กรุณาเลือกปีงบประ���าณ" }}
+                rules={{ required: "กรุณาเลือกปีงบประมาณ" }}
                 render={({ field }) => (
                   <Select
                     label="ปีงบประมาณ"

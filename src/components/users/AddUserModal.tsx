@@ -15,15 +15,21 @@ interface AddUserModalProps {
   onClose: () => void;
 }
 
+interface FormData {
+  name: string;
+  email: string;
+  password: string;
+}
+
 export default function AddUserModal({ isOpen, onClose }: AddUserModalProps) {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<FormData>();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FormData) => {
     try {
       const response = await fetch("http://localhost:3001/auth/register", {
         method: "POST",

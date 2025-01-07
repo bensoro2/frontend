@@ -8,7 +8,6 @@ import {
   ModalFooter,
   Button,
   Input,
-  Textarea,
   Select,
   SelectItem,
 } from "@nextui-org/react";

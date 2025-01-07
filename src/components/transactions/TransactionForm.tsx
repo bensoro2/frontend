@@ -9,8 +9,6 @@ import {
   Button,
   Input,
   Textarea,
-  Select,
-  SelectItem,
   Autocomplete,
   AutocompleteItem,
 } from "@nextui-org/react";
@@ -143,7 +141,7 @@ export default function TransactionForm({
       alert(
         error instanceof Error
           ? error.message
-          : "เกิดข้อผิดพลาดในการบันท��กข้อมูล"
+          : "เกิดข้อผิดพลาดในการบันทึกข้อมูล"
       );
     }
   };

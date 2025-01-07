@@ -25,6 +25,10 @@ interface EditFiscalYearModalProps {
   onSuccess: () => void;
 }
 
+interface FormData {
+  year: string;
+}
+
 export default function EditFiscalYearModal({
   isOpen,
   onClose,
@@ -35,13 +39,13 @@ export default function EditFiscalYearModal({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormData>({
     defaultValues: {
       year: fiscalYear?.year || "",
     },
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FormData) => {
     if (!fiscalYear) return;
 
     try {

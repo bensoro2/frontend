@@ -93,10 +93,6 @@ export default function TransactionTable({
   };
 
   const pages = Math.ceil(transactions.length / rowsPerPage);
-  const items = transactions.slice(
-    (page - 1) * rowsPerPage,
-    page * rowsPerPage
-  );
 
   const filteredData = transactions.filter(
     (item) =>

@@ -107,30 +107,30 @@ export default function EditProjectModal({
     }
   };
 
-  const fetchSubsidies = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3001/subsidies", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const result = await response.json();
-      if (result.success) {
-        setSubsidies(result.data);
-        if (project?.subsidy) {
-          const currentSubsidy = result.data.find(
-            (s: Subsidy) => s.id === project.subsidy?.id
-          );
-          setSelectedSubsidy(currentSubsidy || null);
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching subsidies:", error);
-    }
-  };
-
   useEffect(() => {
+    const fetchSubsidies = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch("http://localhost:3001/subsidies", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const result = await response.json();
+        if (result.success) {
+          setSubsidies(result.data);
+          if (project?.subsidy) {
+            const currentSubsidy = result.data.find(
+              (s: Subsidy) => s.id === project.subsidy?.id
+            );
+            setSelectedSubsidy(currentSubsidy || null);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching subsidies:", error);
+      }
+    };
+
     fetchFiscalYears();
     fetchSubsidies();
   }, [project]);

@@ -23,6 +23,12 @@ interface EditUserModalProps {
   onSuccess: () => void;
 }
 
+interface FormData {
+  name: string;
+  email: string;
+  password?: string;
+}
+
 export default function EditUserModal({
   isOpen,
   onClose,
@@ -33,7 +39,7 @@ export default function EditUserModal({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormData>({
     defaultValues: {
       name: user?.name || "",
       email: user?.email || "",
@@ -41,7 +47,7 @@ export default function EditUserModal({
     },
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FormData) => {
     if (!user) return;
 
     try {

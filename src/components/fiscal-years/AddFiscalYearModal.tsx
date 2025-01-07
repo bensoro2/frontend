@@ -16,6 +16,10 @@ interface AddFiscalYearModalProps {
   onSuccess: () => void;
 }
 
+interface FormData {
+  year: string;
+}
+
 export default function AddFiscalYearModal({
   isOpen,
   onClose,
@@ -26,9 +30,9 @@ export default function AddFiscalYearModal({
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<FormData>();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FormData) => {
     try {
       // ดึง token จาก localStorage
       const token = localStorage.getItem("token");
