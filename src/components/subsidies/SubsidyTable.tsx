@@ -147,15 +147,15 @@ export default function SubsidyTable({
           />
         </div>
         <Button color="primary" onPress={onAddOpen}>
-          เพิ่มเงินอุดหนุน
+          เพิ่มประเภทเงิน
         </Button>
       </div>
 
       <TableWrapper>
         <Table aria-label="ตารางเงินอุดหนุน" className="min-w-[1000px]">
           <TableHeader>
-            <TableColumn>ชีงบประมาณ</TableColumn>
-            <TableColumn>ประเภทเงินอุดหนุน</TableColumn>
+            <TableColumn>ชื่องบประมาณ</TableColumn>
+            <TableColumn>ประเภทเงิน</TableColumn>
             <TableColumn>งบประมาณ</TableColumn>
             <TableColumn>การเบิกจ่าย</TableColumn>
             <TableColumn>งบประมาณคงเหลือ</TableColumn>

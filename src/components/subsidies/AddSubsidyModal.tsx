@@ -109,7 +109,7 @@ export default function AddSubsidyModal({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalContent>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <ModalHeader>เพิ่มเงินอุดหนุน</ModalHeader>
+          <ModalHeader>เพิ่มประเภทเงิน</ModalHeader>
           <ModalBody>
             <div className="flex flex-col gap-4">
               <Controller
@@ -136,7 +136,7 @@ export default function AddSubsidyModal({
                 {...register("type", {
                   required: "กรุณากรอกประเภทเงินอุดหนุน",
                 })}
-                label="ประเภทเงินอุดหนุน"
+                label="เพิ่มประเภทเงิน"
                 isInvalid={!!errors.type}
                 errorMessage={errors.type?.message}
               />

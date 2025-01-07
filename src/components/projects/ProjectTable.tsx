@@ -159,7 +159,7 @@ export default function ProjectTable({
             <TableColumn>ชื่อโครงการ</TableColumn>
             <TableColumn>หน่วยงาน</TableColumn>
             <TableColumn>ผู้รับผิดชอบ</TableColumn>
-            <TableColumn>รายการเงินอุดหนุน</TableColumn>
+            <TableColumn>ประเภทเงิน</TableColumn>
             <TableColumn>งบประมาณ</TableColumn>
             <TableColumn>เบิกจ่าย</TableColumn>
             <TableColumn>คงเหลือ</TableColumn>
