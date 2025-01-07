@@ -52,14 +52,17 @@ export default function FiscalYearTable({
       const token = localStorage.getItem("token");
       console.log("Using token:", token); // เพิ่ม log เพื่อตรวจสอบ token
 
-      const response = await fetch("http://localhost:3001/fiscal-years", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        credentials: "include", // เพิ่มตัวเลือกนี้
-      });
+      const response = await fetch(
+        "https://school-web-c2oh.onrender.com/fiscal-years",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include", // เพิ่มตัวเลือกนี้
+        }
+      );
 
       console.log("Response status:", response.status); // เพิ่ม log เพื่อตรวจสอบ status
 
@@ -102,7 +105,7 @@ export default function FiscalYearTable({
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3001/fiscal-years/${selectedId}`,
+        `https://school-web-c2oh.onrender.com/fiscal-years/${selectedId}`,
         {
           method: "DELETE",
           headers: {

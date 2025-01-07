@@ -65,11 +65,14 @@ export default function AddProjectModal({
   const fetchFiscalYears = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3001/fiscal-years", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        "https://school-web-c2oh.onrender.com/fiscal-years",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const result = await response.json();
       if (result.success) {
         setFiscalYears(result.data);
@@ -82,11 +85,14 @@ export default function AddProjectModal({
   const fetchSubsidies = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3001/subsidies", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        "https://school-web-c2oh.onrender.com/subsidies",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const result = await response.json();
       if (result.success) {
         setSubsidies(result.data);
@@ -116,19 +122,22 @@ export default function AddProjectModal({
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3001/projects", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          ...data,
-          budget: Number(data.budget),
-          fiscalYearId: Number(data.fiscalYearId),
-          subsidyId: selectedSubsidy.id,
-        }),
-      });
+      const response = await fetch(
+        "https://school-web-c2oh.onrender.com/projects",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            ...data,
+            budget: Number(data.budget),
+            fiscalYearId: Number(data.fiscalYearId),
+            subsidyId: selectedSubsidy.id,
+          }),
+        }
+      );
 
       const result = await response.json();
       if (result.success) {

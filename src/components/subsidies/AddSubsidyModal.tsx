@@ -48,11 +48,14 @@ export default function AddSubsidyModal({
   const fetchFiscalYears = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3001/fiscal-years", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        "https://school-web-c2oh.onrender.com/fiscal-years",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to fetch fiscal years");
 
@@ -72,18 +75,21 @@ export default function AddSubsidyModal({
   const onSubmit = async (data: FormData) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3001/subsidies", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          type: data.type,
-          budget: Number(data.budget),
-          fiscalYearId: Number(data.fiscalYearId),
-        }),
-      });
+      const response = await fetch(
+        "https://school-web-c2oh.onrender.com/subsidies",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            type: data.type,
+            budget: Number(data.budget),
+            fiscalYearId: Number(data.fiscalYearId),
+          }),
+        }
+      );
 
       const result = await response.json();
       if (result.success) {

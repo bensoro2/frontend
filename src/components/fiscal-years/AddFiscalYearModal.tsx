@@ -42,19 +42,22 @@ export default function AddFiscalYearModal({
         return;
       }
 
-      const response = await fetch("http://localhost:3001/fiscal-years", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // เพิ่ม Bearer token
-        },
-        body: JSON.stringify({
-          year: data.year,
-          totalBudget: 0, // เพิ่มค่าเริ่มต้น
-          totalExpense: 0,
-          remainingBudget: 0,
-        }),
-      });
+      const response = await fetch(
+        "https://school-web-c2oh.onrender.com/fiscal-years",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // เพิ่ม Bearer token
+          },
+          body: JSON.stringify({
+            year: data.year,
+            totalBudget: 0, // เพิ่มค่าเริ่มต้น
+            totalExpense: 0,
+            remainingBudget: 0,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

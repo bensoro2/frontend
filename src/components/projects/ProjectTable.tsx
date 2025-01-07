@@ -66,11 +66,14 @@ export default function ProjectTable({
   const fetchProjects = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3001/projects", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        "https://school-web-c2oh.onrender.com/projects",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       const result = await response.json();
       if (result.success) {
@@ -101,7 +104,7 @@ export default function ProjectTable({
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3001/projects/${selectedId}`,
+        `https://school-web-c2oh.onrender.com/projects/${selectedId}`,
         {
           method: "DELETE",
           headers: {

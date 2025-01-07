@@ -50,7 +50,7 @@ export default function EditFiscalYearModal({
 
     try {
       const response = await fetch(
-        `http://localhost:3001/fiscal-years/${fiscalYear.id}`,
+        `https://school-web-c2oh.onrender.com/fiscal-years/${fiscalYear.id}`,
         {
           method: "PUT",
           headers: {

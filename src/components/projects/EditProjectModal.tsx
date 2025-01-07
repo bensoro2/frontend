@@ -93,11 +93,14 @@ export default function EditProjectModal({
   const fetchFiscalYears = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3001/fiscal-years", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        "https://school-web-c2oh.onrender.com/fiscal-years",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const result = await response.json();
       if (result.success) {
         setFiscalYears(result.data);
@@ -111,11 +114,14 @@ export default function EditProjectModal({
     const fetchSubsidies = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("http://localhost:3001/subsidies", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          "https://school-web-c2oh.onrender.com/subsidies",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const result = await response.json();
         if (result.success) {
           setSubsidies(result.data);
@@ -141,7 +147,7 @@ export default function EditProjectModal({
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3001/projects/${project.id}`,
+        `https://school-web-c2oh.onrender.com/projects/${project.id}`,
         {
           method: "PUT",
           headers: {

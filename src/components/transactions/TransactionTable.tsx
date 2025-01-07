@@ -56,10 +56,12 @@ export default function TransactionTable({
 
   const fetchTransactions = async () => {
     try {
-      const response = await fetch("http://localhost:3001/transactions", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+      const response = await fetch(
+        "https://school-web-c2oh.onrender.com/transactions",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
       });
       const data = await response.json();
       if (data.success) {
@@ -76,10 +78,12 @@ export default function TransactionTable({
 
   const handleDelete = async (id: number) => {
     try {
-      const response = await fetch(`http://localhost:3001/transactions/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+      const response = await fetch(
+        `https://school-web-c2oh.onrender.com/transactions/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
       const data = await response.json();

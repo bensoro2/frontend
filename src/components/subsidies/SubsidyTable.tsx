@@ -62,11 +62,14 @@ export default function SubsidyTable({
   const fetchSubsidies = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3001/subsidies", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        "https://school-web-c2oh.onrender.com/subsidies",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to fetch subsidies");
@@ -101,7 +104,7 @@ export default function SubsidyTable({
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3001/subsidies/${selectedId}`,
+        `https://school-web-c2oh.onrender.com/subsidies/${selectedId}`,
         {
           method: "DELETE",
           headers: {

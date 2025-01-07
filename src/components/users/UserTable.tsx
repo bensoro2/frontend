@@ -30,10 +30,12 @@ export default function UserTable() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("http://localhost:3001/auth/users", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+      const response = await fetch(
+        "https://school-web-c2oh.onrender.com/auth/users",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
       });
       const data = await response.json();
       if (data.success) {
@@ -54,7 +56,7 @@ export default function UserTable() {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/auth/users/${selectedId}`,
+        `https://school-web-c2oh.onrender.com/auth/users/${selectedId}`,
         {
           method: "DELETE",
           headers: {

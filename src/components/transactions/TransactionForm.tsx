@@ -59,11 +59,14 @@ export default function TransactionForm({
   // ดึงข้อมูลโครงการทั้งหมด
   const fetchProjects = async () => {
     try {
-      const response = await fetch("http://localhost:3001/projects", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await fetch(
+        "https://school-web-c2oh.onrender.com/projects",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       const data = await response.json();
       if (data.success) {
         setProjects(data.data);
@@ -116,8 +119,8 @@ export default function TransactionForm({
       }
 
       const url = transaction
-        ? `http://localhost:3001/transactions/${transaction.id}`
-        : "http://localhost:3001/transactions";
+        ? `https://school-web-c2oh.onrender.com/transactions/${transaction.id}`
+        : "https://school-web-c2oh.onrender.com/transactions";
 
       const response = await fetch(url, {
         method: transaction ? "PUT" : "POST",

@@ -31,10 +31,12 @@ export default function AddUserModal({ isOpen, onClose }: AddUserModalProps) {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const response = await fetch("http://localhost:3001/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "https://school-web-c2oh.onrender.com/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify(data),
