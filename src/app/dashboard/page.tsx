@@ -10,6 +10,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { useRouter } from "next/navigation";
 
 interface Statistics {
   counts: {
@@ -50,6 +51,7 @@ interface Statistics {
 }
 
 export default function DashboardPage() {
+  const router = useRouter();
   const [statistics, setStatistics] = useState<Statistics | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -58,36 +60,43 @@ export default function DashboardPage() {
     let isMounted = true;
     let retryCount = 0;
     const maxRetries = 3;
-    const retryDelay = 1000; // 1 วินาที
+    const retryDelay = 1000;
 
     const fetchWithRetry = async () => {
       try {
         const token = localStorage.getItem("token");
         if (!token) {
-          throw new Error("กรุณาเข้าสู่ระบบ");
+          router.push("/login");
+          return;
         }
 
         const response = await fetch(
-          "http://localhost:3001/statistics/detailed",
+          `${process.env.NEXT_PUBLIC_API_URL}/statistics/detailed`,
           {
             method: "GET",
             headers: {
               Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
             },
+            credentials: "include",
           }
         );
+
+        if (response.status === 401) {
+          localStorage.removeItem("token");
+          router.push("/login");
+          return;
+        }
 
         const result = await response.json();
 
         if (!response.ok) {
-          // ถ้าเป็น error เรื่อง max_user_connections และยังไม่เกิน maxRetries
           if (
             result.error?.includes("max_user_connections") &&
             retryCount < maxRetries
           ) {
             retryCount++;
             console.log(`Retrying... Attempt ${retryCount} of ${maxRetries}`);
-            // รอ 1 วินาทีแล้วลองใหม่
             await new Promise((resolve) => setTimeout(resolve, retryDelay));
             return fetchWithRetry();
           }
@@ -101,6 +110,11 @@ export default function DashboardPage() {
         }
       } catch (err) {
         console.error("Error fetching statistics:", err);
+        if (err instanceof Error && err.message === "Invalid token") {
+          localStorage.removeItem("token");
+          router.push("/login");
+          return;
+        }
         if (isMounted) {
           setError(
             err instanceof Error ? err.message : "เกิดข้อผิดพลาดในการดึงข้อมูล"
@@ -118,7 +132,7 @@ export default function DashboardPage() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [router]);
 
   if (loading) {
     return (
