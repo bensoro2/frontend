@@ -50,6 +50,7 @@ export default function AddSubsidyModal({
       const token = localStorage.getItem("token");
       const response = await fetch(
         "https://school-web-c2oh.onrender.com/fiscal-years",
+        // "http://localhost:3001/fiscal-years",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -77,6 +78,7 @@ export default function AddSubsidyModal({
       const token = localStorage.getItem("token");
       const response = await fetch(
         "https://school-web-c2oh.onrender.com/subsidies",
+        // "http://localhost:3001/subsidies",
         {
           method: "POST",
           headers: {

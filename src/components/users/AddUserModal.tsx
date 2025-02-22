@@ -33,14 +33,16 @@ export default function AddUserModal({ isOpen, onClose }: AddUserModalProps) {
     try {
       const response = await fetch(
         "https://school-web-c2oh.onrender.com/auth/register",
+        // "http://localhost:3001/auth/register",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(data),
-      });
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
       const result = await response.json();
       if (result.success) {

@@ -14,12 +14,15 @@ import {
   AutocompleteItem,
 } from "@nextui-org/react";
 import { useForm, Controller } from "react-hook-form";
+import { departmentGroups, DepartmentGroup } from "@/data/departments";
+import { responsibles } from "@/data/responsibles";
 
 interface Project {
   id: number;
   name: string;
   budget: number;
   department: string;
+  department_group: DepartmentGroup;
   responsible: string;
   withdrawalAmount: number;
   remainingBudget: number;
@@ -45,6 +48,7 @@ interface FormData {
   name: string;
   budget: number;
   department: string;
+  department_group: DepartmentGroup;
   responsible: string;
   fiscalYearId: number;
   subsidyId: number;
@@ -83,6 +87,7 @@ export default function EditProjectModal({
           name: project.name,
           budget: project.budget,
           department: project.department,
+          department_group: project.department_group,
           responsible: project.responsible,
           fiscalYearId: project.fiscalYearId,
           subsidyId: project.subsidy?.id,
@@ -95,6 +100,7 @@ export default function EditProjectModal({
       const token = localStorage.getItem("token");
       const response = await fetch(
         "https://school-web-c2oh.onrender.com/fiscal-years",
+        // "http://localhost:3001/fiscal-years",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -116,6 +122,7 @@ export default function EditProjectModal({
         const token = localStorage.getItem("token");
         const response = await fetch(
           "https://school-web-c2oh.onrender.com/subsidies",
+          // "http://localhost:3001/subsidies",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -144,10 +151,20 @@ export default function EditProjectModal({
   const onSubmit = async (data: FormData) => {
     if (!project || !selectedSubsidy) return;
 
+    // หา responsible name จาก id
+    const selectedResponsible = responsibles.find(
+      (r) => r.id === data.responsible
+    );
+    if (!selectedResponsible) {
+      alert("ไม่พบข้อมูลผู้รับผิดชอบ");
+      return;
+    }
+
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
         `https://school-web-c2oh.onrender.com/projects/${project.id}`,
+        // `http://localhost:3001/projects/${project.id}`,
         {
           method: "PUT",
           headers: {
@@ -159,6 +176,8 @@ export default function EditProjectModal({
             budget: Number(data.budget),
             fiscalYearId: Number(data.fiscalYearId),
             subsidyId: selectedSubsidy.id,
+            department: departmentGroups[data.department_group],
+            responsible: selectedResponsible.name, // ส่ง name แทน id
           }),
         }
       );
@@ -176,7 +195,12 @@ export default function EditProjectModal({
   if (!project) return null;
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      hideCloseButton
+      isDismissable={false}
+    >
       <ModalContent>
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalHeader>แก้ไขโครงการ</ModalHeader>
@@ -242,6 +266,28 @@ export default function EditProjectModal({
                 )}
               />
 
+              <Controller
+                name="department_group"
+                control={control}
+                defaultValue={project?.department_group}
+                rules={{ required: "กรุณาเลือกกลุ่มงาน/กลุ่มสาระ" }}
+                render={({ field }) => (
+                  <Select
+                    label="กลุ่มงาน/กลุ่มสาระ"
+                    selectedKeys={field.value ? [field.value] : []}
+                    onChange={(e) => field.onChange(e.target.value)}
+                    isInvalid={!!errors.department_group}
+                    errorMessage={errors.department_group?.message}
+                  >
+                    {Object.entries(departmentGroups).map(([key, value]) => (
+                      <SelectItem key={key} value={key}>
+                        {value}
+                      </SelectItem>
+                    ))}
+                  </Select>
+                )}
+              />
+
               <Input
                 {...register("name", { required: "กรุณากรอกชื่อโครงการ" })}
                 label="ชื่อโครงการ"
@@ -250,24 +296,72 @@ export default function EditProjectModal({
                 errorMessage={errors.name?.message}
               />
 
-              <Input
-                {...register("department", {
-                  required: "กรุณากรอกชื่อหน่วยงาน",
-                })}
-                label="หน่วยงาน"
-                defaultValue={project?.department}
-                isInvalid={!!errors.department}
-                errorMessage={errors.department?.message}
-              />
-
-              <Input
-                {...register("responsible", {
-                  required: "กรุณากรอกชื่อผู้รับผิดชอบ",
-                })}
-                label="ผู้รับผิดชอบ"
-                defaultValue={project?.responsible}
-                isInvalid={!!errors.responsible}
-                errorMessage={errors.responsible?.message}
+              <Controller
+                name="responsible"
+                control={control}
+                defaultValue={
+                  // หา id จาก name ที่มีอยู่
+                  responsibles.find((r) => r.name === project?.responsible)?.id
+                }
+                rules={{ required: "กรุณาเลือกผู้รับผิดชอบ" }}
+                render={({ field }) => (
+                  <div className="flex gap-2">
+                    <Autocomplete
+                      className="flex-1"
+                      label="ผู้รับผิดชอบ"
+                      placeholder="พิมพ์เพื่อค้นหาผู้รับผิดชอบ..."
+                      defaultItems={responsibles}
+                      selectedKey={field.value}
+                      defaultSelectedKey={
+                        // หา id จาก name ที่มีอยู่
+                        responsibles.find(
+                          (r) => r.name === project?.responsible
+                        )?.id
+                      }
+                      onSelectionChange={(key) => {
+                        const selected = responsibles.find((r) => r.id === key);
+                        if (selected) {
+                          field.onChange(selected.id);
+                        }
+                      }}
+                      isInvalid={!!errors.responsible}
+                      errorMessage={errors.responsible?.message}
+                    >
+                      {(item) => (
+                        <AutocompleteItem key={item.id} textValue={item.name}>
+                          {item.name}
+                        </AutocompleteItem>
+                      )}
+                    </Autocomplete>
+                    <Button
+                      type="button"
+                      variant="flat"
+                      onPress={() => {
+                        const selected = responsibles.find(
+                          (r) => r.id === field.value
+                        );
+                        if (selected) {
+                          const name = selected.name;
+                          if (name.includes("และคณะ")) {
+                            field.onChange(
+                              responsibles.find(
+                                (r) => r.name === name.replace(" และคณะ", "")
+                              )?.id
+                            );
+                          } else {
+                            field.onChange(
+                              responsibles.find(
+                                (r) => r.name === name + " และคณะ"
+                              )?.id
+                            );
+                          }
+                        }
+                      }}
+                    >
+                      และคณะ
+                    </Button>
+                  </div>
+                )}
               />
 
               <Input

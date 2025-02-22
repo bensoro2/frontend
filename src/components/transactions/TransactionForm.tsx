@@ -61,6 +61,7 @@ export default function TransactionForm({
     try {
       const response = await fetch(
         "https://school-web-c2oh.onrender.com/projects",
+        // "http://localhost:3001/projects",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -216,7 +217,16 @@ export default function TransactionForm({
               {...register("duration", { required: "กรุณากรอกระยะเวลา" })}
               errorMessage={errors.duration?.message}
             />
-            <Textarea label="หมายเหตุ" {...register("note")} />
+            <Textarea
+              label="หมายเหตุ"
+              {...register("note")}
+              minRows={3}
+              maxRows={10}
+              classNames={{
+                input: "min-h-[80px]",
+                inputWrapper: "min-h-[80px]",
+              }}
+            />
           </ModalBody>
           <ModalFooter>
             <Button color="danger" variant="light" onPress={onClose}>

@@ -11,11 +11,12 @@ import {
   useDisclosure,
   Input,
 } from "@nextui-org/react";
-import { Search } from "lucide-react";
+import { Search, Download } from "lucide-react";
 import AddSubsidyModal from "./AddSubsidyModal";
 import EditSubsidyModal from "./EditSubsidyModal";
 import TableWrapper from "@/components/common/TableWrapper";
 import DeleteConfirmationModal from "../common/DeleteConfirmationModal";
+import { exportToPDF } from "../utils/exportPDF";
 
 interface Subsidy {
   id: number;
@@ -64,6 +65,7 @@ export default function SubsidyTable({
       const token = localStorage.getItem("token");
       const response = await fetch(
         "https://school-web-c2oh.onrender.com/subsidies",
+        // "http://localhost:3001/subsidies",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -105,6 +107,7 @@ export default function SubsidyTable({
       const token = localStorage.getItem("token");
       const response = await fetch(
         `https://school-web-c2oh.onrender.com/subsidies/${selectedId}`,
+        // `http://localhost:3001/subsidies/${selectedId}`,
         {
           method: "DELETE",
           headers: {
@@ -123,11 +126,47 @@ export default function SubsidyTable({
     setDeleteModalOpen(false);
   };
 
+  const handleExportPDF = () => {
+    const dataToExport = searchTerm
+      ? subsidies.filter(
+          (item) =>
+            item.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            item.budget.toString().includes(searchTerm) ||
+            item.remainingBudget.toString().includes(searchTerm)
+        )
+      : subsidies;
+    exportToPDF({
+      title: "รายงานประเภทเงิน",
+      filename: "subsidies-report",
+      headers: [
+        "ชื่องบประมาณ",
+        "ประเภทเงิน",
+        "งบประมาณ",
+        "การเบิกจ่าย",
+        "งบประมาณคงเหลือ",
+        "วันที่สร้าง",
+      ],
+      data: dataToExport,
+      mapping: (item) => [
+        item.fiscalYear?.year || "-",
+        item.type,
+        item.budget.toLocaleString() + " บาท",
+        item.withdrawal.toLocaleString() + " บาท",
+        item.remainingBudget.toLocaleString() + " บาท",
+        new Date(item.createdAt).toLocaleDateString("th-TH"),
+      ],
+      columnWidths: ["15%", "20%", "15%", "15%", "20%", "15%"],
+      styles: {
+        fontSize: 12,
+        alignment: "center",
+      },
+    });
+  };
+
   const filteredData = subsidies.filter(
     (item) =>
       item.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.budget.toString().includes(searchTerm) ||
-      item.withdrawal.toString().includes(searchTerm) ||
       item.remainingBudget.toString().includes(searchTerm)
   );
 
@@ -146,9 +185,19 @@ export default function SubsidyTable({
             }}
           />
         </div>
-        <Button color="primary" onPress={onAddOpen}>
-          เพิ่มประเภทเงิน
-        </Button>
+        <div className="flex items-center gap-4">
+          <Button
+            color="primary"
+            variant="flat"
+            onPress={handleExportPDF}
+            startContent={<Download size={20} />}
+          >
+            Export PDF
+          </Button>
+          <Button color="primary" onPress={onAddOpen}>
+            เพิ่มประเภทเงิน
+          </Button>
+        </div>
       </div>
 
       <TableWrapper>

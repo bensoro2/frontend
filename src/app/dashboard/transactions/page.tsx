@@ -8,7 +8,7 @@ export default function TransactionsPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">รายการหลัก</h1>
+      <h1 className="text-2xl font-bold mb-6">รายการเบิกจ่าย</h1>
       <TransactionTable searchTerm={searchTerm} onSearch={setSearchTerm} />
     </div>
   );

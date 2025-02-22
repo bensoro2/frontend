@@ -9,7 +9,6 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  User,
 } from "@nextui-org/react";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { useRouter } from "next/navigation";
@@ -17,6 +16,8 @@ import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import DeleteConfirmationModal from "./common/DeleteConfirmationModal";
 import Link from "next/link";
+import { FaUserCircle } from "react-icons/fa";
+import { useTheme } from "next-themes";
 
 interface UserProfile {
   id: number;
@@ -28,12 +29,14 @@ export default function AdminNavbar() {
   const router = useRouter();
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
+  const { theme } = useTheme();
 
   const fetchUserProfile = async () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
         "https://school-web-c2oh.onrender.com/auth/profile",
+        // "http://localhost:3001/auth/profile",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -92,16 +95,18 @@ export default function AdminNavbar() {
             <NavbarItem>
               <Dropdown placement="bottom-end">
                 <DropdownTrigger>
-                  <User
-                    as="button"
-                    avatarProps={{
-                      isBordered: true,
-                      src: "https://i.pravatar.cc/150",
-                    }}
-                    className="transition-transform cursor-pointer"
-                    description="Admin"
-                    name={userProfile?.name || "ผู้ดูแลระบบ"}
-                  />
+                  <div className="flex items-center gap-2 cursor-pointer">
+                    <FaUserCircle
+                      size={32}
+                      className={theme === "dark" ? "text-white" : "text-black"}
+                    />
+                    <div className="flex flex-col">
+                      <span className="text-sm font-semibold">
+                        {userProfile?.name || "ผู้ดูแลระบบ"}
+                      </span>
+                      <span className="text-xs text-default-500">Admin</span>
+                    </div>
+                  </div>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Profile Actions" variant="flat">
                   <DropdownItem

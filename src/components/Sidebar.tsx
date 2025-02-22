@@ -21,7 +21,7 @@ const menuItems = [
     icon: "📋",
   },
   {
-    name: "รายการหลัก",
+    name: "รายการเบิกจ่าย",
     href: "/dashboard/transactions",
     icon: "📝",
   },
@@ -40,7 +40,7 @@ export default function Sidebar() {
     <div
       className={`${
         isCollapsed ? "w-16" : "w-64"
-      } h-screen bg-gray-100 dark:bg-gray-900 p-4 transition-all duration-300 ease-in-out relative`}
+      } min-h-screen bg-gray-100 dark:bg-gray-900 p-4 transition-all duration-300 ease-in-out relative flex flex-col`}
     >
       {/* ปุ่มซ่อน/แสดง Sidebar */}
       <Button
@@ -53,7 +53,8 @@ export default function Sidebar() {
         {isCollapsed ? "→" : "←"}
       </Button>
 
-      <div className="space-y-2">
+      {/* เมนูหลัก */}
+      <div className="flex-1 space-y-2">
         {menuItems.map((item) => (
           <Link
             key={item.href}

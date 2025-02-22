@@ -70,6 +70,7 @@ export default function EditSubsidyModal({
       const token = localStorage.getItem("token");
       const response = await fetch(
         `https://school-web-c2oh.onrender.com/subsidies/${subsidy.id}`,
+        // `http://localhost:3001/subsidies/${subsidy.id}`,
         {
           method: "PUT",
           headers: {

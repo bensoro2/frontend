@@ -11,11 +11,12 @@ import {
   useDisclosure,
   Input,
 } from "@nextui-org/react";
-import { Search } from "lucide-react";
+import { Search, Download } from "lucide-react";
 import EditFiscalYearModal from "./EditFiscalYearModal";
 import AddFiscalYearModal from "./AddFiscalYearModal";
 import TableWrapper from "@/components/common/TableWrapper";
 import DeleteConfirmationModal from "../common/DeleteConfirmationModal";
+import { exportToPDF } from "../utils/exportPDF";
 
 interface FiscalYear {
   id: number;
@@ -54,6 +55,7 @@ export default function FiscalYearTable({
 
       const response = await fetch(
         "https://school-web-c2oh.onrender.com/fiscal-years",
+        // "http://localhost:3001/fiscal-years",
         {
           method: "GET",
           headers: {
@@ -106,6 +108,7 @@ export default function FiscalYearTable({
       const token = localStorage.getItem("token");
       const response = await fetch(
         `https://school-web-c2oh.onrender.com/fiscal-years/${selectedId}`,
+        // `http://localhost:3001/fiscal-years/${selectedId}`,
         {
           method: "DELETE",
           headers: {
@@ -134,6 +137,37 @@ export default function FiscalYearTable({
       item.remainingBudget.toString().includes(searchTerm)
   );
 
+  const handleExportPDF = () => {
+    const dataToExport = searchTerm ? filteredData : fiscalYears;
+    exportToPDF({
+      title: "รายงานปีงบประมาณ",
+      filename: "fiscal-years-report",
+      headers: [
+        "ปีงบประมาณ",
+        "งบประมาณทั้งหมด",
+        "ค่าใช้จ่ายทั้งหมด",
+        "งบประมาณคงเหลือ",
+      ],
+      data: dataToExport,
+      mapping: (item) => [
+        item.year,
+        item.totalBudget.toLocaleString() + " บาท",
+        item.totalExpense.toLocaleString() + " บาท",
+        item.remainingBudget.toLocaleString() + " บาท",
+      ],
+      columnWidths: [
+        "25%", // ปีงบประมาณ
+        "25%", // งบประมาณทั้งหมด
+        "25%", // ค่าใช้จ่ายทั้งหมด
+        "25%", // งบประมาณคงเหลือ
+      ],
+      styles: {
+        fontSize: 12,
+        alignment: "center",
+      },
+    });
+  };
+
   return (
     <>
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4">
@@ -149,9 +183,19 @@ export default function FiscalYearTable({
             }}
           />
         </div>
-        <Button color="primary" onPress={onAddOpen}>
-          เพิ่มปีงบประมาณ
-        </Button>
+        <div className="flex items-center gap-4">
+          <Button
+            color="primary"
+            variant="flat"
+            onPress={handleExportPDF}
+            startContent={<Download size={20} />}
+          >
+            Export PDF
+          </Button>
+          <Button color="primary" onPress={onAddOpen}>
+            เพิ่มปีงบประมาณ
+          </Button>
+        </div>
       </div>
 
       <TableWrapper>

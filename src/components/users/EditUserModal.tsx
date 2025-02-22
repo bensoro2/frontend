@@ -53,6 +53,7 @@ export default function EditUserModal({
     try {
       const response = await fetch(
         `https://school-web-c2oh.onrender.com/auth/users/${user.id}`,
+        // `http://localhost:3001/auth/users/${user.id}`,
         {
           method: "PUT",
           headers: {
