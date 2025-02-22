@@ -7,12 +7,12 @@ import { thSarabunFont } from "../../fonts/thSarabunFont";
 type PageOrientation = "portrait" | "landscape";
 type Alignment = "left" | "center" | "right" | "justify";
 
-interface ExportPDFOptions {
+interface ExportPDFOptions<T = Record<string, string | number>> {
   title: string;
   filename: string;
   headers: string[];
-  data: any[];
-  mapping: (item: any) => string[];
+  data: T[];
+  mapping: (item: T) => string[];
   columnWidths?: (string | number)[];
   styles?: {
     fontSize?: number;
@@ -42,7 +42,7 @@ const fonts: TFontDictionary = {
 pdfMake.vfs = vfs;
 pdfMake.fonts = fonts;
 
-export const exportToPDF = ({
+export const exportToPDF = <T>({
   title,
   filename,
   headers,
@@ -51,7 +51,7 @@ export const exportToPDF = ({
   columnWidths,
   styles,
   pageOrientation,
-}: ExportPDFOptions) => {
+}: ExportPDFOptions<T>) => {
   const docDefinition: TDocumentDefinitions = {
     pageOrientation: pageOrientation || "portrait",
     content: [
