@@ -50,6 +50,9 @@ interface Statistics {
   };
 }
 
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL || "https://school-web-c2oh.onrender.com";
+
 export default function DashboardPage() {
   const router = useRouter();
   const [statistics, setStatistics] = useState<Statistics | null>(null);
@@ -70,17 +73,14 @@ export default function DashboardPage() {
           return;
         }
 
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/statistics/detailed`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        );
+        const response = await fetch(`${API_URL}/statistics/detailed`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
 
         if (response.status === 401) {
           localStorage.removeItem("token");
@@ -110,6 +110,10 @@ export default function DashboardPage() {
         }
       } catch (err) {
         console.error("Error fetching statistics:", err);
+        if (err instanceof SyntaxError) {
+          setError("เกิดข้อผิดพลาดในการเชื่อมต่อกับเซิร์ฟเวอร์");
+          return;
+        }
         if (err instanceof Error && err.message === "Invalid token") {
           localStorage.removeItem("token");
           router.push("/login");
