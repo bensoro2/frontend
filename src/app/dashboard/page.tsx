@@ -11,6 +11,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 
 interface Statistics {
   counts: {
@@ -55,6 +56,7 @@ const API_URL =
 
 export default function DashboardPage() {
   const router = useRouter();
+  const { theme } = useTheme();
   const [statistics, setStatistics] = useState<Statistics | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -184,89 +186,89 @@ export default function DashboardPage() {
         <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold">
           ระบบจัดการโรงเรียนสตูลวิทยา
         </h2>
-        <p className="text-base md:text-xl text-gray-500">
+        <p className="text-base md:text-xl text-gray-500 dark:text-gray-400">
           ระบบบริหารจัดการงบประมาณและการเงิน
         </p>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
-        <Card className="min-w-[140px]">
+        <Card className="min-w-[140px] dark:bg-gray-800">
           <CardBody className="text-center p-3 md:p-4">
-            <p className="text-sm md:text-lg">รายการเบิกจ่าย</p>
-            <p className="text-xl md:text-2xl font-bold">
+            <p className="text-sm md:text-lg dark:text-gray-200">รายการเบิกจ่าย</p>
+            <p className="text-xl md:text-2xl font-bold dark:text-white">
               {statistics?.counts.transactions}
             </p>
           </CardBody>
         </Card>
-        <Card className="min-w-[140px]">
+        <Card className="min-w-[140px] dark:bg-gray-800">
           <CardBody className="text-center p-3 md:p-4">
-            <p className="text-sm md:text-lg">โครงการ</p>
-            <p className="text-xl md:text-2xl font-bold">
+            <p className="text-sm md:text-lg dark:text-gray-200">โครงการ</p>
+            <p className="text-xl md:text-2xl font-bold dark:text-white">
               {statistics?.counts.projects}
             </p>
           </CardBody>
         </Card>
-        <Card className="min-w-[140px]">
+        <Card className="min-w-[140px] dark:bg-gray-800">
           <CardBody className="text-center p-3 md:p-4">
-            <p className="text-sm md:text-lg">ประเภทเงิน</p>
-            <p className="text-xl md:text-2xl font-bold">
+            <p className="text-sm md:text-lg dark:text-gray-200">ประเภทเงิน</p>
+            <p className="text-xl md:text-2xl font-bold dark:text-white">
               {statistics?.counts.subsidies}
             </p>
           </CardBody>
         </Card>
-        <Card className="min-w-[140px]">
+        <Card className="min-w-[140px] dark:bg-gray-800">
           <CardBody className="text-center p-3 md:p-4">
-            <p className="text-sm md:text-lg">ปีงบประมาณ</p>
-            <p className="text-xl md:text-2xl font-bold">
+            <p className="text-sm md:text-lg dark:text-gray-200">ปีงบประมาณ</p>
+            <p className="text-xl md:text-2xl font-bold dark:text-white">
               {statistics?.fiscalYearStatistics.summary.totalYears}
             </p>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               งบประมาณรวม{" "}
               {statistics?.fiscalYearStatistics.summary.totalBudget.toLocaleString()}{" "}
               บาท
             </p>
           </CardBody>
         </Card>
-        <Card className="min-w-[140px]">
+        <Card className="min-w-[140px] dark:bg-gray-800">
           <CardBody className="text-center p-3 md:p-4">
-            <p className="text-sm md:text-lg">ผู้ใช้งาน</p>
-            <p className="text-xl md:text-2xl font-bold">
+            <p className="text-sm md:text-lg dark:text-gray-200">ผู้ใช้งาน</p>
+            <p className="text-xl md:text-2xl font-bold dark:text-white">
               {statistics?.counts.users}
             </p>
           </CardBody>
         </Card>
       </div>
 
-      <div className="overflow-x-auto bg-white rounded-lg shadow">
+      <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
         <div className="min-w-[800px]">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-gray-100">
-                <th className="p-2 md:p-3 text-left">ปีงบประมาณ</th>
-                <th className="p-2 md:p-3 text-right">งบประมาณ</th>
-                <th className="p-2 md:p-3 text-right">เบิกจ่าย</th>
-                <th className="p-2 md:p-3 text-right">คงเหลือ</th>
-                <th className="p-2 md:p-3 text-center">จำนวนโครงการ</th>
-                <th className="p-2 md:p-3 text-center">จำนวนประเภทเงิน</th>
+              <tr className="bg-gray-100 dark:bg-gray-700">
+                <th className="p-2 md:p-3 text-left dark:text-gray-200">ปีงบประมาณ</th>
+                <th className="p-2 md:p-3 text-right dark:text-gray-200">งบประมาณ</th>
+                <th className="p-2 md:p-3 text-right dark:text-gray-200">เบิกจ่าย</th>
+                <th className="p-2 md:p-3 text-right dark:text-gray-200">คงเหลือ</th>
+                <th className="p-2 md:p-3 text-center dark:text-gray-200">จำนวนโครงการ</th>
+                <th className="p-2 md:p-3 text-center dark:text-gray-200">จำนวนประเภทเงิน</th>
               </tr>
             </thead>
             <tbody>
               {statistics?.fiscalYearStatistics.byYear.map((year) => (
-                <tr key={year.year} className="border-b hover:bg-gray-50">
-                  <td className="p-2 md:p-3">ปีงบประมาณ {year.year}</td>
-                  <td className="p-2 md:p-3 text-right">
+                <tr key={year.year} className="border-b dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <td className="p-2 md:p-3 dark:text-gray-200">ปีงบประมาณ {year.year}</td>
+                  <td className="p-2 md:p-3 text-right dark:text-gray-200">
                     {year.totalBudget.toLocaleString()} บาท
                   </td>
-                  <td className="p-2 md:p-3 text-right">
+                  <td className="p-2 md:p-3 text-right dark:text-gray-200">
                     {year.totalExpense.toLocaleString()} บาท
                   </td>
-                  <td className="p-2 md:p-3 text-right">
+                  <td className="p-2 md:p-3 text-right dark:text-gray-200">
                     {year.remainingBudget.toLocaleString()} บาท
                   </td>
-                  <td className="p-2 md:p-3 text-center">
+                  <td className="p-2 md:p-3 text-center dark:text-gray-200">
                     {year.projectCount}
                   </td>
-                  <td className="p-2 md:p-3 text-center">
+                  <td className="p-2 md:p-3 text-center dark:text-gray-200">
                     {year.subsidyCount}
                   </td>
                 </tr>
@@ -276,7 +278,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
         <div className="h-[300px] md:h-[400px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
@@ -288,18 +290,18 @@ export default function DashboardPage() {
                 bottom: 70,
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" />
+              <CartesianGrid strokeDasharray="3 3" stroke={theme === 'dark' ? '#374151' : '#e5e7eb'} />
               <XAxis
                 dataKey="name"
                 angle={-45}
                 textAnchor="end"
                 height={70}
                 interval={0}
-                tick={{ fontSize: 12 }}
+                tick={{ fontSize: 12, fill: theme === 'dark' ? '#D1D5DB' : '#374151' }}
               />
               <YAxis
                 width={80}
-                tick={{ fontSize: 12 }}
+                tick={{ fontSize: 12, fill: theme === 'dark' ? '#D1D5DB' : '#374151' }}
                 tickFormatter={(value) =>
                   value >= 1000000
                     ? (value / 1000000).toFixed(1) + "M"
@@ -310,7 +312,12 @@ export default function DashboardPage() {
               />
               <Tooltip
                 formatter={(value) => value.toLocaleString() + " บาท"}
-                contentStyle={{ fontSize: 12 }}
+                contentStyle={{ 
+                  fontSize: 12,
+                  backgroundColor: theme === 'dark' ? '#1F2937' : '#FFFFFF',
+                  border: theme === 'dark' ? '1px solid #374151' : '1px solid #E5E7EB',
+                  color: theme === 'dark' ? '#D1D5DB' : '#374151'
+                }}
               />
               <Bar
                 dataKey="งบประมาณ"
